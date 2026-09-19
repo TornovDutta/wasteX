@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #141414;
+  --color-secondary: #1a1a1a;
+  --color-accent: #F59E0B;
+  --color-textmain: #f3f4f6;
+  --color-textmuted: #9ca3af;
+  
+  --animate-fade-in: fade-in 1s ease-out forwards;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+}
+
+@layer base {
+  body {
+    @apply bg-primary text-textmain font-sans;
+  }
+}

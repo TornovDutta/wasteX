@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pymongo
+python-dotenv
+pydantic
+google-search-results
+huggingface_hub
