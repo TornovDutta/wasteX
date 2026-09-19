@@ -38,7 +38,7 @@ const Chatbot = () => {
       const allMessages = [...messages, userMessage];
 
       const response = await fetch(
-        "http://localhost:8000/chat",
+        `${import.meta.env.VITE_API_URL}/chat`,
         {
           headers: {
             "Content-Type": "application/json",

@@ -15,7 +15,7 @@ export default function Home() {
   const fetchListings = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:8000/listings");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/listings`);
       setListings(res.data);
     } catch (error) {
       console.error("Error fetching listings:", error);
@@ -36,13 +36,13 @@ export default function Home() {
     try {
       let semanticListings = [];
       try {
-        const resSemantic = await axios.post("http://localhost:8000/search/semantic", { query: searchQuery });
+        const resSemantic = await axios.post(`${import.meta.env.VITE_API_URL}/search/semantic`, { query: searchQuery });
         semanticListings = resSemantic.data;
       } catch (err) {
         console.warn("Semantic search failed", err);
       }
 
-      const res = await axios.get("http://localhost:8000/listings");
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/listings`);
       const allListings = res.data;
       const q = searchQuery.toLowerCase();
       const fuzzyListings = allListings.filter(l => 

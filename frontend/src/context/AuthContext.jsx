@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
       if (firebaseUser) {
         try {
           // Send user data to backend
-          const res = await axios.post("http://localhost:8000/auth/google", {
+          const res = await axios.post(`${import.meta.env.VITE_API_URL}/auth/google`, {
             company_name: firebaseUser.displayName || "Unknown User",
             email: firebaseUser.email,
             firebase_uid: firebaseUser.uid,

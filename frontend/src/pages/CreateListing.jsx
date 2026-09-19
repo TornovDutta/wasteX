@@ -55,7 +55,7 @@ export default function CreateListing() {
         expected_price: parseFloat(dataToSubmit.expected_price),
         producer_id: "mock_producer_123"
       };
-      const res = await axios.post("http://localhost:8000/listings", payload);
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/listings`, payload);
       navigate(`/listing/${res.data.id}`);
     } catch (error) {
       console.error("Error creating listing:", error);
@@ -96,7 +96,7 @@ export default function CreateListing() {
         }
       });
         
-      const res = await axios.post("http://localhost:8000/parse-listing", { 
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/parse-listing`, { 
         prompt: aiPrompt,
         current_data: currentData
       });

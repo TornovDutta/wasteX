@@ -17,7 +17,7 @@ export default function ListingDetails() {
 
   const fetchMatch = async () => {
     try {
-      const res = await axios.get(`http://localhost:8000/match/${id}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/match/${id}`);
       setData(res.data);
     } catch (error) {
       console.error("Error fetching match data:", error);
@@ -39,7 +39,7 @@ export default function ListingDetails() {
   const handleSendMessage = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/messages", {
+      await axios.post(`${import.meta.env.VITE_API_URL}/messages`, {
         listing_id: id,
         buyer_name: contactModal.buyerName,
         message: message
