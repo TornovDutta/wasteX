@@ -4,6 +4,10 @@ WasteX is an intelligent industrial waste exchange platform designed to bridge t
 
 By leveraging a combination of internal database matching and external search capabilities, WasteX ensures that waste producers can find a sustainable and profitable destination for their by-products, whether the buyer is already on the platform or somewhere out on the web.
 
+## System Design
+
+![System Design](./docs/design.png)
+
 ## How It Works
 
 1. **Waste Listing:** Producers can easily list industrial waste, providing details like material type, quantity, form, condition, location, and expected price.
