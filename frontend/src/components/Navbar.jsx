@@ -3,7 +3,7 @@ import { Leaf, Menu, LogOut, User as UserIcon } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 
 export default function Navbar() {
-  const { user, loginWithGoogle, logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <header className="sticky top-0 z-50">
@@ -43,9 +43,9 @@ export default function Navbar() {
                     </button>
                   </div>
                 ) : (
-                  <button onClick={loginWithGoogle} className="ml-2 relative inline-flex shrink-0 items-center justify-center rounded-sm border border-gray-700 bg-secondary text-textmain font-medium whitespace-nowrap transition-all hover:bg-gray-800 h-8 px-3 text-sm">
+                  <Link to="/login" className="ml-2 relative inline-flex shrink-0 items-center justify-center rounded-sm border border-gray-700 bg-secondary text-textmain font-medium whitespace-nowrap transition-all hover:bg-gray-800 h-8 px-3 text-sm">
                     Sign in
-                  </button>
+                  </Link>
                 )}
               </div>
               <button className="md:hidden text-textmain">

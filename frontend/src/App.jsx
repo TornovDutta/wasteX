@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import CreateListing from "./pages/CreateListing";
 import ListingDetails from "./pages/ListingDetails";
+import Login from "./pages/Login";
 import Chatbot from "./components/Chatbot";
 import Footer from "./components/Footer";
 import { AuthProvider } from "./context/AuthContext";
@@ -18,6 +19,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/create" element={<CreateListing />} />
               <Route path="/listing/:id" element={<ListingDetails />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </main>
           <Footer />
