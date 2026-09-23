@@ -297,3 +297,36 @@ def semantic_search(request: SearchRequest):
 def send_message(message: ContactMessage):
     result = database.messages.insert_one(message.dict())
     return {"id": str(result.inserted_id), "message": "Message sent successfully"}
+
+@router.get("/nearby-buyers/{user_id}")
+def get_nearby_buyers(user_id: str):
+    user = database.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Mocking distance/compatibility for nearby buyers based on string location or just fetching consumers
+    location = user.get("location", "Unknown")
+    buyers = []
+    
+    cursor = database.users.find({"role": "consumer"})
+    for consumer in cursor:
+        if str(consumer["_id"]) == user_id:
+            continue # skip self
+            
+        buyers.append({
+            "id": str(consumer["_id"]),
+            "name": consumer.get("company_name", "Unknown Buyer"),
+            "location": consumer.get("location", "Unknown Location"),
+            "distance": "12 km", # mocked
+            "compatibility": "85%", # mocked
+        })
+        
+    if not buyers:
+        # Provide some dummy data if no actual consumers exist in DB to make the feature visible
+        buyers = [
+            {"id": "dummy1", "name": "GreenThreads Recyclers", "location": location, "distance": "8 km", "compatibility": "92%"},
+            {"id": "dummy2", "name": "EcoFibre Processing", "location": "Nearby City", "distance": "15 km", "compatibility": "88%"}
+        ]
+        
+    return {"user_location": location, "buyers": buyers}
+

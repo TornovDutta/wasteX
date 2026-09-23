@@ -28,6 +28,12 @@ export default function Navbar() {
                   List Waste
                 </Link>
                 
+                {user && (
+                  <Link to="/nearby-buyers" className="relative inline-flex shrink-0 items-center justify-center rounded-sm border border-gray-700 bg-secondary text-textmain font-medium whitespace-nowrap transition-all hover:bg-gray-800 h-8 px-3 text-sm">
+                    Nearby Buyers
+                  </Link>
+                )}
+                
                 {user ? (
                   <div className="flex items-center gap-4 ml-4 pl-4 border-l border-gray-800">
                     <div className="flex items-center gap-2">
