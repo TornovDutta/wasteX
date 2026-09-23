@@ -10,6 +10,12 @@ export default function NearbyBuyers() {
   const [userLocation, setUserLocation] = useState("");
   const [fetching, setFetching] = useState(true);
   const [error, setError] = useState(null);
+  
+  // Contact feature state
+  const [contactingId, setContactingId] = useState(null);
+  const [message, setMessage] = useState("");
+  const [sendingMessage, setSendingMessage] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
 
   useEffect(() => {
     if (!loading) {
@@ -45,6 +51,27 @@ export default function NearbyBuyers() {
     }
   };
 
+  const handleSendMessage = async (buyerId, buyerName) => {
+    if (!message.trim()) return;
+    setSendingMessage(true);
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/messages`, {
+        listing_id: "direct_contact",
+        buyer_name: user.displayName || user.email || "Unknown User",
+        message: `To ${buyerName}: ${message}`
+      });
+      setSuccessMsg(`Message sent to ${buyerName}!`);
+      setContactingId(null);
+      setMessage("");
+      setTimeout(() => setSuccessMsg(""), 3000);
+    } catch (err) {
+      console.error("Error sending message:", err);
+      alert("Failed to send message. Please try again.");
+    } finally {
+      setSendingMessage(false);
+    }
+  };
+
   if (loading || fetching) {
     return (
       <div className="flex justify-center items-center py-20">
@@ -64,9 +91,16 @@ export default function NearbyBuyers() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
       <h1 className="text-3xl font-bold text-gray-800 mb-2">Nearby Buyers</h1>
-      <p className="text-gray-600 mb-8">
+      <p className="text-gray-600 mb-6">
         Buyers near your location: {userLocation || "Unknown"}
       </p>
+
+      {successMsg && (
+        <div className="bg-green-100 text-green-700 p-4 rounded-lg mb-6 flex items-center gap-2">
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+          {successMsg}
+        </div>
+      )}
 
       {buyers.length === 0 ? (
         <div className="bg-white rounded-xl shadow-md p-6 text-center text-gray-500">
@@ -91,9 +125,44 @@ export default function NearbyBuyers() {
                   Compatibility: {buyer.compatibility}
                 </span>
               </div>
-              <button className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
-                Contact Buyer
-              </button>
+              
+              {contactingId === buyer.id ? (
+                <div className="mt-4 bg-gray-50 p-3 rounded-lg border border-gray-200">
+                  <textarea
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    placeholder={`Type your message to ${buyer.name}...`}
+                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none text-sm"
+                    rows="3"
+                  ></textarea>
+                  <div className="flex gap-2 mt-2">
+                    <button 
+                      onClick={() => handleSendMessage(buyer.id, buyer.name)}
+                      disabled={sendingMessage || !message.trim()}
+                      className="flex-1 bg-green-600 text-white py-1.5 rounded text-sm hover:bg-green-700 disabled:opacity-50 transition-colors"
+                    >
+                      {sendingMessage ? "Sending..." : "Send"}
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setContactingId(null);
+                        setMessage("");
+                      }}
+                      disabled={sendingMessage}
+                      className="flex-1 bg-gray-200 text-gray-700 py-1.5 rounded text-sm hover:bg-gray-300 disabled:opacity-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <button 
+                  onClick={() => setContactingId(buyer.id)}
+                  className="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors"
+                >
+                  Contact Buyer
+                </button>
+              )}
             </div>
           ))}
         </div>
